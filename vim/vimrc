@@ -25,7 +25,6 @@ nnoremap <leader><leader> <C-^>     " Switch between last two buffers
 " Load plugins
 
 if filereadable(expand("$VIM/vundle.vim"))
-    echo "VUNDLE"
     source $VIM/vundle.vim
 endif
 
