@@ -17,7 +17,7 @@ apps=(
     iterm2
     kaleidoscope
     mou
-    opera
+    #opera
     screenflow
     sonos
     sourcetree
