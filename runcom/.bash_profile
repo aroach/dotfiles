@@ -80,3 +80,10 @@ unset READLINK CURRENT_SCRIPT SCRIPT_PATH DOTFILE
 # Export
 
 export SHELL_BASH SHELL_ZSH OS DOTFILES_DIR EXTRA_DIR
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+export PATH=/usr/local/terraform/bin:/home/ashleyroach/terraform:$PATH
+
+export NVM_DIR="/Users/ashleyroach/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
