@@ -12,6 +12,13 @@ set autoread                    "Reload files changed outside vim
 set laststatus=2                "Always display the status line
 set hidden                      "Hide buffer instead of closing it
 " set pastetoggle=<F2>            "Paste without being smart
+set relativenumber 		" show relative line numbers
+
+" Shortcut to rapidly toggle `set list`
+nmap <leader>l :set list!<CR>
+
+" Use the same symbols as TextMate for tabstops and EOLs
+set listchars=tab:▸\ ,eol:¬  
 
 " Key mappings
 
@@ -61,11 +68,23 @@ Plugin 'marijnh/tern_for_vim'
 
 Plugin 'tpope/vim-markdown'
 Plugin 'mattn/emmet-vim'
+Plugin 'reedes/vim-pencil'
+Plugin 'Yggdroot/indentLine'
 
 call vundle#end()
 
 "Filetype plugin indent on is required by vundle
 filetype plugin indent on
+
+
+" Pencil config
+filetype plugin on       " may already be in your .vimrc
+
+augroup pencil
+  autocmd!
+  autocmd FileType markdown,mkd,md call pencil#init()
+  autocmd FileType text         call pencil#init()
+augroup END
 
 " Swap file and backups
 
@@ -116,9 +135,28 @@ set scrolloff=4
 set sidescrolloff=15
 set sidescroll=1
 
+" Only do this part when compiled with support for autocommands
+if has("autocmd")
+  " Enable file type detection
+  filetype on
 
+  " Syntax of these languages is fussy over tabs Vs spaces
+  autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+  " Customisations based on house-style (arbitrary)
+  autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
+
+  " Treat .rss files as XML
+  autocmd BufNewFile,BufRead *.rss setfiletype xml
+endif
 
 " NERDTree
 
 nmap <leader>n :NERDTreeToggle<cr>
 let NERDTreeShowHidden=1
+
+" indentLine
+let g:indentLine_enabled = 1
