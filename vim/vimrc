@@ -1,163 +1,100 @@
-" General
-
+" Don't try to be vi compatible
 set nocompatible
-set number                      "Line numbers are good
-set backspace=indent,eol,start  "Allow backspace in insert mode
-set history=1000                "Store lots of :cmdline history
-set showcmd                     "Show incomplete cmds down the bottom
-set showmode                    "Show current mode down the bottom
-set gcr=a:blinkon0              "Disable cursor blink
-set visualbell                  "No sounds
-set autoread                    "Reload files changed outside vim
-set laststatus=2                "Always display the status line
-set hidden                      "Hide buffer instead of closing it
-" set pastetoggle=<F2>            "Paste without being smart
-set relativenumber 		" show relative line numbers
 
-" Shortcut to rapidly toggle `set list`
-nmap <leader>l :set list!<CR>
-
-" Use the same symbols as TextMate for tabstops and EOLs
-set listchars=tab:▸\ ,eol:¬  
-
-" Key mappings
-
-" Load plugins
-
+" Helps force plugins to load correctly when it is turned back on below
 filetype off
 
-set rtp+=$HOME/.vim/bundle/Vundle.vim
-"call vundle#begin("$HOME/.vim/bundle")
-call vundle#begin()
+" TODO: Load plugins here (pathogen or vundle)
 
-" let Vundle manage Vundle (required)
+" Turn on syntax highlighting
+syntax on
 
-Bundle "VundleVim/Vundlevim"
-
-" Generic
-
-Plugin 'scrooloose/nerdtree'
-Plugin 'kien/ctrlp.vim'
-Bundle "itchyny/lightline.vim"
-Plugin 'terryma/vim-multiple-cursors'
-" Bundle 'rking/ag.vim'
-
-" Git
-
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-
-" Syntax hightlighting & colors
-
-Plugin 'scrooloose/syntastic'
-" Plugin 'altercation/vim-colors-solarized'
-Plugin 'flazz/vim-colorschemes'
-
-
-" Completion & snippets
-
-" Plugin 'Valloric/YouCompleteMe'
-" Plugin 'SirVer/ultisnips'
-" Plugin 'honza/vim-snippets'
-
-" JavaScript
-
-Bundle "pangloss/vim-javascript"
-Plugin 'marijnh/tern_for_vim'
-
-" Other
-
-Plugin 'tpope/vim-markdown'
-Plugin 'mattn/emmet-vim'
-Plugin 'reedes/vim-pencil'
-Plugin 'Yggdroot/indentLine'
-
-call vundle#end()
-
-"Filetype plugin indent on is required by vundle
+" For plugins to load correctly
 filetype plugin indent on
 
+" TODO: Pick a leader key
+" let mapleader = ","
 
-" Pencil config
-filetype plugin on       " may already be in your .vimrc
+" Security
+set modelines=0
 
-augroup pencil
-  autocmd!
-  autocmd FileType markdown,mkd,md call pencil#init()
-  autocmd FileType text         call pencil#init()
-augroup END
+" Show line numbers
+set number
 
-" Swap file and backups
+" Show file stats
+set ruler
 
+" Blink cursor on error instead of beeping (grr)
+set visualbell
 
-" Persistent undo
+" Encoding
+set encoding=utf-8
 
-if has('persistent_undo')
-  silent !mkdir ~/.vim/backups > /dev/null 2>&1
-  set undodir=~/.vim/backups
-  set undofile
-endif
+" Whitespace
+set wrap
+set textwidth=79
+set formatoptions=tcqrn1
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set noshiftround
 
-" Indentation
+" Cursor motion
+set scrolloff=3
+set backspace=indent,eol,start
+set matchpairs+=<:> " use % to jump between pairs
+runtime! macros/matchit.vim
 
-" Enable loading the plugin/indent files for specific file types
+" Move up/down editor lines
+nnoremap j gj
+nnoremap k gk
 
-filetype plugin indent on
+" Allow hidden buffers
+set hidden
 
-" Wrapping
+" Rendering
+set ttyfast
 
-set nowrap       "Don't wrap lines
-set linebreak    "Wrap lines at convenient points
+" Status bar
+set laststatus=2
 
-" Folding
+" Last line
+set showmode
+set showcmd
 
-set foldmethod=indent   "fold based on indent
-set foldnestmax=3       "deepest fold is 3 levels
-set nofoldenable        "dont fold by default
-
-" Search
-
+" Searching
+nnoremap / /\v
+vnoremap / /\v
 set hlsearch
 set incsearch
 set ignorecase
-set showmatch
 set smartcase
+set showmatch
+map <leader><space> :let @/=''<cr> " clear search
 
-" Colors
+" Remap help key.
+inoremap <F1> <ESC>:set invfullscreen<CR>a
+nnoremap <F1> :set invfullscreen<CR>
+vnoremap <F1> :set invfullscreen<CR>
 
-set cursorline
-syntax enable
-colorscheme molokai
-highlight clear SignColumn
+" Textmate holdouts
 
-" Scrolling
+" Formatting
+map <leader>q gqip
 
-set scrolloff=4
-set sidescrolloff=15
-set sidescroll=1
+" Visualize tabs and newlines
+set listchars=tab:▸\ ,eol:¬
+" Uncomment this to enable by default:
+" set list " To enable by default
+" Or use your leader key + l to toggle on/off
+map <leader>l :set list!<CR> " Toggle tabs and EOL
 
-" Only do this part when compiled with support for autocommands
-if has("autocmd")
-  " Enable file type detection
-  filetype on
-
-  " Syntax of these languages is fussy over tabs Vs spaces
-  autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
-  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-
-  " Customisations based on house-style (arbitrary)
-  autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
-
-  " Treat .rss files as XML
-  autocmd BufNewFile,BufRead *.rss setfiletype xml
-endif
-
-" NERDTree
-
-nmap <leader>n :NERDTreeToggle<cr>
-let NERDTreeShowHidden=1
-
-" indentLine
-let g:indentLine_enabled = 1
+" Color scheme (terminal)
+set t_Co=256
+set background=dark
+let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+" put https://raw.github.com/altercation/vim-colors-solarized/master/colors/solarized.vim
+" in ~/.vim/colors/ and uncomment:
+" colorscheme solarized
